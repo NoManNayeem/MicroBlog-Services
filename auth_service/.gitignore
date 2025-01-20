@@ -1,0 +1,52 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+*.sqlite3
+db.sqlite3
+
+# Environment variables
+.env
+
+# Pytest
+.pytest_cache/
+.tox/
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
+.idea/
+
+# Ignore virtual environment folders
+auth_env/
+env/
+venv/
+*.swp
+*.swo
