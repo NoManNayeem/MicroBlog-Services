@@ -1,0 +1,38 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of the build process
+/build/
+bin/
+
+# Configuration and environment files
+.env
+!env.example
+
+# Dependency directories (vendor and Go modules)
+vendor/
+*.mod
+*.sum
+
+# Logs and debugging
+*.log
+
+# IDE and editor specific files
+.vscode/
+.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# SQLite database
+*.db

@@ -3,11 +3,13 @@
 
 ## 1. Project Overview
 
-MicroBlog-Services is a microservices-based project consisting of two separate services:
+**MicroBlog-Services** is a microservices-based project consisting of three separate services:
+
 1. **Auth Service**: Built using Django Rest Framework (DRF), it manages user registration and authentication via JWT.
 2. **Blog Service**: Built using Flask, it allows authenticated users to perform CRUD operations on blogs.
+3. **Go Comments Service**: Built using Go, it allows authenticated users to manage comments for blogs.
 
-Both services are independent but communicate via JWT tokens.
+These services are independent but communicate via JWT tokens and REST APIs.
 
 ---
 
@@ -19,6 +21,11 @@ Both services are independent but communicate via JWT tokens.
 
 ### **Blog Service**
 - Create, read, update, and delete blogs
+- Authenticated operations using JWT tokens from the Auth Service
+
+### **Go Comments Service**
+- Create, read, and manage comments for blogs
+- Validate blog IDs with the Blog Service
 - Authenticated operations using JWT tokens from the Auth Service
 
 ---
@@ -34,13 +41,13 @@ cd MicroBlog-Services
 
 ---
 
-## 4. How to Run Both Services Locally
+## 4. How to Run All Services Locally
 
 ### **Environment Setup**
 
 #### **Windows**
 1. Open a terminal and navigate to the project root directory.
-2. Create virtual environments for both services:
+2. Create virtual environments for the Python services:
    ```bash
    python -m venv auth_env
    python -m venv blog_env
@@ -57,7 +64,7 @@ cd MicroBlog-Services
 
 #### **Linux/MacOS**
 1. Open a terminal and navigate to the project root directory.
-2. Create virtual environments for both services:
+2. Create virtual environments for the Python services:
    ```bash
    python3 -m venv auth_env
    python3 -m venv blog_env
@@ -72,6 +79,8 @@ cd MicroBlog-Services
      source blog_env/bin/activate
      ```
 
+---
+
 ### **Install Requirements**
 
 - **Auth Service**:
@@ -84,14 +93,29 @@ cd MicroBlog-Services
   pip install -r blog_service/requirements.txt
   ```
 
-### **Keep JWT Secrets Consistent**
+---
 
-Ensure the `.env` files for both services have the same `JWT_SECRET_KEY`. Use the `.env.example` files as templates.
+### **Environment Variables**
 
-- Example `.env` file for both services:
+Ensure each service has its own `.env` file. Use the provided `.env.example` files as templates.
+
+- **Auth Service**:
   ```
   JWT_SECRET_KEY=your-secret-key
   ```
+- **Blog Service**:
+  ```
+  FLASK_ENV=development
+  ```
+
+- **Go Comments Service**:
+  ```
+  FLASK_APP_URL=http://127.0.0.1:5000
+  TOKEN_VERIFY_URL=http://127.0.0.1:8000/api/token/verify/
+  PORT=8080
+  ```
+
+---
 
 ### **Run the Services**
 
@@ -107,7 +131,11 @@ Ensure the `.env` files for both services have the same `JWT_SECRET_KEY`. Use th
   python app.py
   ```
 
-Auth Service will run on `http://127.0.0.1:8000` and Blog Service on `http://127.0.0.1:5000`.
+- **Go Comments Service**:
+  ```bash
+  cd go_comments
+  go run main.go
+  ```
 
 ---
 
@@ -143,25 +171,19 @@ curl -X POST http://127.0.0.1:5000/blogs -H "Authorization: Bearer <access_token
 curl -X GET http://127.0.0.1:5000/blogs -H "Authorization: Bearer <access_token>"
 ```
 
-### **5. Read One Blog**
+### **5. Create a Comment**
 ```bash
-curl -X GET http://127.0.0.1:5000/blogs/1 -H "Authorization: Bearer <access_token>"
-```
-
-### **6. Update a Blog**
-```bash
-curl -X PUT http://127.0.0.1:5000/blogs/1 -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" -d '{
-    "title": "Updated Blog Title",
-    "content": "Updated blog content."
+curl -X POST http://127.0.0.1:8080/comments -H "Authorization: Bearer <access_token>" -H "Content-Type: application/json" -d '{
+    "post_id": 2,
+    "title": "Sample Comment",
+    "content": "This is a sample comment for the specified post."
 }'
 ```
 
-### **7. Delete a Blog**
+### **6. Read All Comments**
 ```bash
-curl -X DELETE http://127.0.0.1:5000/blogs/1 -H "Authorization: Bearer <access_token>"
+curl -X GET http://127.0.0.1:8080/comments -H "Authorization: Bearer <access_token>"
 ```
-
-Replace `<access_token>` with the token obtained from the **Get Tokens** step.
 
 ---
 
